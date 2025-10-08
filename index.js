@@ -1,28 +1,37 @@
 var numberOfDrumButtons = document.querySelectorAll(".drum").length;
 
 for (var i = 0; i < numberOfDrumButtons; i++) {
-
-  document.querySelectorAll(".drum")[i].addEventListener("click", function() {
-
-    var buttonInnerHTML = this.innerHTML;
-
-    makeSound(buttonInnerHTML);
-
-    buttonAnimation(buttonInnerHTML);
-
-  });
-
+  document.querySelectorAll(".drum")[i].addEventListener("click", handleDrumClick);
 }
 
-document.addEventListener("keypress", function(event) {
+document.addEventListener("keypress", handleKeyPress);
 
+
+/**
+ * Handles the click event on a drum button.
+ * It gets the button's inner HTML and triggers the sound and animation.
+ */
+function handleDrumClick() {
+  var buttonInnerHTML = this.innerHTML;
+  makeSound(buttonInnerHTML);
+  buttonAnimation(buttonInnerHTML);
+}
+
+/**
+ * Handles the keypress event for the document.
+ * It gets the key that was pressed and triggers the sound and animation.
+ * @param {KeyboardEvent} event - The keypress event object.
+ */
+function handleKeyPress(event) {
   makeSound(event.key);
-
   buttonAnimation(event.key);
+}
 
-});
 
-
+/**
+ * Plays a sound based on the key pressed or button clicked.
+ * @param {string} key - The key that was pressed or the innerHTML of the button that was clicked.
+ */
 function makeSound(key) {
 
   switch (key) {
@@ -68,14 +77,20 @@ function makeSound(key) {
 }
 
 
+/**
+ * Animates a button by adding and removing a "pressed" class.
+ * This function also handles cases where a key is pressed that does not correspond to a button.
+ * @param {string} currentKey - The key that was pressed or the innerHTML of the button that was clicked.
+ */
 function buttonAnimation(currentKey) {
 
   var activeButton = document.querySelector("." + currentKey);
 
-  activeButton.classList.add("pressed");
+  if (activeButton) {
+    activeButton.classList.add("pressed");
 
-  setTimeout(function() {
-    activeButton.classList.remove("pressed");
-  }, 100);
-
+    setTimeout(function() {
+      activeButton.classList.remove("pressed");
+    }, 100);
+  }
 }
